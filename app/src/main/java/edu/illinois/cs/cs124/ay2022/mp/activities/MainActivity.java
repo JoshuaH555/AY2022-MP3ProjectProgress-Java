@@ -48,10 +48,10 @@ public final class MainActivity extends AppCompatActivity
 
   // Map boundaries, used to limit the scrollable area.
   // Our tile server does not provide tiles outside this geographic region.
-  public static final double MAP_LIMIT_NORTH = 40.1741;
-  public static final double MAP_LIMIT_SOUTH = 40.0247;
-  public static final double MAP_LIMIT_WEST = -88.3331;
-  public static final double MAP_LIMIT_EAST = -88.1433;
+  public static final double MAP_LIMIT_NORTH = 40.10986682167534;
+  public static final double MAP_LIMIT_SOUTH = 40.10986682167534;
+  public static final double MAP_LIMIT_WEST = -88.22831928981661;
+  public static final double MAP_LIMIT_EAST = -88.22831928981661;
 
   // Max and default map zoom levels
   public static final double MAP_MIN_ZOOM = 12.0;
