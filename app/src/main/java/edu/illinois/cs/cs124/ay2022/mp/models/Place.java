@@ -1,5 +1,6 @@
 package edu.illinois.cs.cs124.ay2022.mp.models;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /*
@@ -56,13 +57,39 @@ public final class Place {
   }
 
   // Description of the place
-  private String description;
+  private static String description;
 
   public String getDescription() {
     return description;
   }
   public static List<Place> search(final List<Place> places, final String search) {
-    assert false;
-    return null;
+
+    if (places == null || search == null) {
+      throw new IllegalArgumentException();
+    }
+    if (places.size() == 0 || search.isEmpty()) {
+      return places;
+    }
+    String search2;
+    String newDesc;
+    List<Place> newList = new ArrayList<>();
+    search2 = search.trim();
+    for (int i = 0; i < places.size(); i++) {
+      newDesc = places.get(i).description.replaceAll(".!?,:;/", " ");
+      String str = "";
+      for (int j = 0; j < newDesc.length(); j++) {
+        if (Character.isLetterOrDigit(newDesc.charAt(j)) || Character.isSpaceChar(newDesc.charAt(j))) {
+          str += newDesc.charAt(j);
+        }
+      }
+      String[] parts = str.split(" ");
+      for (int p = 0; p < newDesc.length(); p++) {
+        if (search2.equals(parts[p])) {
+          newList.add(places.get(p));
+          break;
+        }
+      }
+    }
+    return newList;
   }
 }
