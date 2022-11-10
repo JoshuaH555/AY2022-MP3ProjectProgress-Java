@@ -1,6 +1,7 @@
 package edu.illinois.cs.cs124.ay2022.mp.models;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /*
@@ -71,21 +72,19 @@ public final class Place {
       return places;
     }
     String search2;
-    String newDesc;
     List<Place> newList = new ArrayList<>();
     search2 = search.trim();
-    for (int i = 0; i < places.size(); i++) {
-      newDesc = places.get(i).description.replaceAll(".!?,:;/", " ");
-      String str = "";
-      for (int j = 0; j < newDesc.length(); j++) {
-        if (Character.isLetterOrDigit(newDesc.charAt(j)) || Character.isSpaceChar(newDesc.charAt(j))) {
-          str += newDesc.charAt(j);
-        }
-      }
-      String[] parts = str.split(" ");
-      for (int p = 0; p < newDesc.length(); p++) {
-        if (search2.equals(parts[p])) {
-          newList.add(places.get(p));
+    search2 = search2.toLowerCase();
+    for (Place p : places) {
+      String newDesc = p.getDescription();
+      System.out.println(newDesc);
+      newDesc = newDesc.replace(".!?,:;/", " ");
+      newDesc = newDesc.toLowerCase();
+      String[] parts = newDesc.split(" ");
+      for (String s : parts) {
+        s = s.replaceAll("[^a-zA-Z0-9]", "");
+        if (s.trim().equalsIgnoreCase(search.trim())) {
+          newList.add(p);
           break;
         }
       }
