@@ -57,7 +57,7 @@ public final class Place {
   }
 
   // Description of the place
-  private static String description;
+  private String description;
 
   public String getDescription() {
     return description;
@@ -73,6 +73,7 @@ public final class Place {
     List<Place> newList = new ArrayList<>();
     for (Place p : places) {
       String newDesc = p.getDescription();
+      //System.out.println(p.name);
       newDesc = newDesc.replaceAll("\\.", " ").replaceAll("!", " ")
           .replaceAll("\\?", " ").replaceAll(",", " ")
           .replaceAll(":", " ").replaceAll(";", " ")
