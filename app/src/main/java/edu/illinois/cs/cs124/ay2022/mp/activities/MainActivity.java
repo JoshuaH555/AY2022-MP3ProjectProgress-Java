@@ -214,13 +214,22 @@ public final class MainActivity extends AppCompatActivity
     // Force the MapView to redraw so that we see the updated list of markers
     mapView.invalidate();
   }
+
   @Override
   public boolean onQueryTextChange(final String text) {
-    Log.d(TAG, "onQueryTextChange " +  text);
+    List<Place> newPlaces = Place.search(allPlaces, text);
+    if (newPlaces.isEmpty()) {
+      updateShownPlaces(allPlaces);
+    } else {
+      updateShownPlaces(newPlaces);
+    }
+    Log.d(TAG, "onQueryTextChange " + text);
     return true;
   }
+
   @Override
   public boolean onQueryTextSubmit(final String text) {
+
     return false;
   }
 }

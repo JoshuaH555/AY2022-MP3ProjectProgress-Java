@@ -62,6 +62,7 @@ public final class Place {
   public String getDescription() {
     return description;
   }
+
   public static List<Place> search(final List<Place> places, final String search) {
 
     if (places == null || search == null) {
@@ -73,11 +74,16 @@ public final class Place {
     List<Place> newList = new ArrayList<>();
     for (Place p : places) {
       String newDesc = p.getDescription();
-      //System.out.println(p.name);
-      newDesc = newDesc.replaceAll("\\.", " ").replaceAll("!", " ")
-          .replaceAll("\\?", " ").replaceAll(",", " ")
-          .replaceAll(":", " ").replaceAll(";", " ")
-          .replaceAll("/", " ");
+      // System.out.println(p.name);
+      newDesc =
+          newDesc
+              .replaceAll("\\.", " ")
+              .replaceAll("!", " ")
+              .replaceAll("\\?", " ")
+              .replaceAll(",", " ")
+              .replaceAll(":", " ")
+              .replaceAll(";", " ")
+              .replaceAll("/", " ");
       String[] parts = newDesc.split(" ");
       for (String s : parts) {
         s = s.replaceAll("[^a-zA-Z0-9]", "");
