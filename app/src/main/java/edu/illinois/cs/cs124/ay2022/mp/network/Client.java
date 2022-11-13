@@ -28,6 +28,7 @@ import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
+import org.apache.commons.lang3.NotImplementedException;
 
 /*
  * Client object used by the app to interact with the place API server.
@@ -91,6 +92,11 @@ public final class Client {
     // Actually queue the request
     // The callbacks above will be run once it completes
     requestQueue.add(getPlacesRequest);
+  }
+
+  public void postFavoritePlace(
+      final Place place, final Consumer<ResultMightThrow<Boolean>> callback) {
+    throw new NotImplementedException();
   }
 
   /*
