@@ -67,6 +67,60 @@ public final class Server extends Dispatcher {
         .setHeader("Content-Type", "application/json; charset=utf-8");
   }
 
+  private MockResponse postFavoritePlace(final RecordedRequest request) {
+    try {
+      String body = request.getBody().readUtf8();
+      String[] array = body.split(",");
+      if (array.length != 5) {
+        return new MockResponse()
+            .setResponseCode(HttpURLConnection.HTTP_BAD_REQUEST);
+      }
+      Place p = OBJECT_MAPPER.readValue(body, Place.class);
+      if (p.getId() == null
+          || p.getName() == null
+          || p.getDescription() == null) {
+        return new MockResponse()
+            .setResponseCode(HttpURLConnection.HTTP_BAD_REQUEST);
+      } else if (p.getId().length() != 36
+          || p.getName().length() < 1
+          || p.getDescription().length() < 1
+          || p.getLatitude() <= -90.0
+          || p.getLatitude() >= 90.0
+          || p.getLongitude() <= -180.0
+          || p.getLongitude() >= 180.0) {
+        return new MockResponse()
+            .setResponseCode(HttpURLConnection.HTTP_BAD_REQUEST);
+      }
+      int count = 0;
+      for (int i = 0; i < places.size(); i++) {
+        if (places.get(i).getId().equals(p.getId())) {
+          places.set(i, p);
+          count++;
+        }
+      }
+      if (count == 0) {
+        places.add(p);
+      }
+    } catch (Exception e) {
+      return new MockResponse()
+          .setResponseCode(HttpURLConnection.HTTP_BAD_REQUEST);
+    }
+
+    // On failure, return a 400 BAD Request
+    // Deserialize POST body to Place object
+    // Check the resulting Place object to make sure it's valid
+    // take some care with the latitude and longitude
+
+    // Valid Place object
+    // Insert it into our list of places
+    // if the ID is new, add it
+    // Otherwise, replace it
+
+    return new MockResponse()
+        .setResponseCode(HttpURLConnection.HTTP_OK)
+        .setHeader("Content-Type", "application/json; charset=utf-8");
+  }
+
   /*
    * Server request dispatcher.
    * Responsible for parsing the HTTP request and determining how to respond.
@@ -102,6 +156,8 @@ public final class Server extends Dispatcher {
       } else if (path.equals("/places") && method.equals("GET")) {
         // Return the JSON list of restaurants for a GET request to the path /restaurants
         return getPlaces();
+      } else if (path.equals("/favoriteplace") && method.equals("POST")) {
+        return postFavoritePlace(request);
       }
 
       // If the route didn't match above, then we return a 404 NOT FOUND
