@@ -2,6 +2,7 @@ package edu.illinois.cs.cs124.ay2022.mp.network;
 
 import android.os.Build;
 import android.util.Log;
+import com.android.volley.AuthFailureError;
 import com.android.volley.Cache;
 import com.android.volley.ExecutorDelivery;
 import com.android.volley.Network;
@@ -24,11 +25,12 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
-import org.apache.commons.lang3.NotImplementedException;
+//import org.apache.commons.lang3.NotImplementedException;
 
 /*
  * Client object used by the app to interact with the place API server.
@@ -96,7 +98,36 @@ public final class Client {
 
   public void postFavoritePlace(
       final Place place, final Consumer<ResultMightThrow<Boolean>> callback) {
-    throw new NotImplementedException();
+    StringRequest getFavoritePlaceRequest =
+        new StringRequest(
+            Request.Method.POST,
+            FavoritePlacesApplication.SERVER_URL + "/favoriteplace/",
+            response -> {
+              // This code runs on success
+              callback.accept(new ResultMightThrow<>(true));
+                // Pass the List<Place> to the callback
+            },
+            error -> {
+              callback.accept(new ResultMightThrow<>(false));
+            }) {
+          @Override
+          public byte[] getBody() throws AuthFailureError {
+            try {
+              ObjectMapper mapper = new ObjectMapper();
+              String placeStr = mapper.writeValueAsString(place);
+              return placeStr.getBytes(StandardCharsets.UTF_8);
+            } catch (Exception e) {
+              throw new IllegalStateException();
+            }
+          }
+          @Override
+          public String getBodyContentType() {
+            return "application/json; charset=utf-8";
+          }
+        };
+    // Actually queue the request
+    // The callbacks above will be run once it completes
+    requestQueue.add(getFavoritePlaceRequest);
   }
 
   /*

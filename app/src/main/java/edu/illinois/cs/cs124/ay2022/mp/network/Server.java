@@ -66,7 +66,6 @@ public final class Server extends Dispatcher {
          */
         .setHeader("Content-Type", "application/json; charset=utf-8");
   }
-
   private MockResponse postFavoritePlace(final RecordedRequest request) {
     try {
       String body = request.getBody().readUtf8();
