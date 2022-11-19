@@ -241,6 +241,8 @@ public final class MainActivity extends AppCompatActivity
   @Override
   public boolean singleTapConfirmedHelper(final GeoPoint p) {
     Log.d(TAG, "singleTap");
+    Intent launchAddFavoritePlace = new Intent(this, AddPlaceActivity.class);
+    startActivity(launchAddFavoritePlace);
     return false;
   }
 
